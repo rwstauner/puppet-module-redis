@@ -16,6 +16,7 @@ define redis::install($ensure=present, $bin_dir="", $tar_version=undef) {
 
     exec { "fetch redis ${version}": 
       command => "curl -sL https://github.com/antirez/redis/tarball/${tar_version} | tar --strip-components 1 -xz",
+      path    => "/usr/local/bin:/usr/bin:/bin",
       cwd => $redis_src,
       creates => "${redis_src}/Makefile",
       require => File[$redis_src],
@@ -23,6 +24,7 @@ define redis::install($ensure=present, $bin_dir="", $tar_version=undef) {
 
     exec { "install redis ${version}":
       command => "make && /etc/init.d/redis-server stop && make install PREFIX=/usr/local",
+      path    => "/usr/local/bin:/usr/bin:/bin",
       cwd => "${redis_src}/src",
       unless => "test `redis-server --version | cut -d ' ' -f 4` = '${version}'",
       require => [Exec["fetch redis ${version}"], Package[$redis::dependencies::packages]]
