@@ -36,14 +36,6 @@ To install and configure Redis, include the module:
 
     include redis::server
 
-Note that you'll need to define a global search path for the `exec`
-resource to make the `redis::server` class function properly. This
-should ideally be placed in `manifests/site.pp`:
-
-    Exec {
-      path => "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-    }
-
 You'll also need to install some build dependencies:
 
     include redis::dependencies
