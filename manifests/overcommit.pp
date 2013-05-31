@@ -2,7 +2,7 @@ class redis::overcommit($ensure=present) {
 
   file { "/etc/sysctl.d/overcommit.conf":
     ensure => $ensure,
-    content => "vm.overcommit_memory=1",
+    content => "vm.overcommit_memory=1\n",
   }
 
   if $ensure == "present" {
