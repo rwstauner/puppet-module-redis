@@ -24,7 +24,7 @@ define redis::install($ensure=present, $bin_dir="", $tar_version=undef) {
     exec { "install redis ${version}":
       command => "make && /etc/init.d/redis-server stop && make install PREFIX=/usr/local",
       cwd => "${redis_src}/src",
-      unless => "test `redis-server --version | cut -d ' ' -f 4` = '${version}'",
+      unless => "redis-server --version | sed -e 's/ version / v=/' | grep -qF ' v=$version '",
       require => [Exec["fetch redis ${version}"], Package[$redis::dependencies::packages]]
     }
 
